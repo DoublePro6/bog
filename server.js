@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; 
 const DB_FILE = path.join(__dirname, 'database.json');
 
 app.use(express.json());
@@ -199,4 +199,5 @@ app.listen(PORT, async () => {
   await initDB();
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📊 Database file: ${DB_FILE}`);
+
 });
