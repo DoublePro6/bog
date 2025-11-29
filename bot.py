@@ -2,10 +2,11 @@
 import discord
 from discord import app_commands
 import requests
+import os
 
 # Configuration
 BACKEND_URL = 'https://web-production-4d919.up.railway.app'
-BOT_TOKEN = 'MTQ0MjE2OTk3Nzk1NTE1NjAyMA.GftKPW.e46xTt9EBG3w3FU0vYqNQqgyOEO3cqgEEkzNLM'
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 # Setup bot with intents
 intents = discord.Intents.default()
