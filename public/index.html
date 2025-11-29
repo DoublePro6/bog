@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .notice {
+            background: #e8f4f8;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #555;
+        }
+        .info-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .token {
+            background: #fff;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .ip {
+            color: #764ba2;
+            font-weight: bold;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Secure Access Portal</h1>
+        
+        <div class="notice">
+            <strong>Privacy Notice:</strong> By accessing this site, you consent to having your IP address logged and associated with your Discord account for security purposes.
+        </div>
+
+        <div id="loading" class="loading">
+            Loading your session...
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="info-box">
+                <h3>Your Session Information</h3>
+                <p><strong>IP Address:</strong> <span class="ip" id="ip"></span></p>
+                <p style="margin-top: 10px;"><strong>Session Token:</strong></p>
+                <div class="token" id="token"></div>
+            </div>
+
+            <div class="info-box">
+                <h3>Link Your Discord Account</h3>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    Copy your session token above
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    Go to our Discord server
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    Send the command: <code>!verify YOUR_TOKEN</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function initSession() {
+            try {
+                const response = await fetch('/api/session');
+                const data = await response.json();
+                
+                document.getElementById('ip').textContent = data.ip;
+                document.getElementById('token').textContent = data.sessionToken;
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } catch (err) {
+                console.error('Error:', err);
+                document.getElementById('loading').innerHTML = '❌ Failed to connect to server.';
+            }
+        }
+
+        initSession();
+    </script>
+</body>
+</html>
